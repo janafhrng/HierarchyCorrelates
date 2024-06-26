@@ -1,0 +1,86 @@
+%% plots brain gray
+%addpath(genpath('C:\Users\fehring\sciebo\Toolboxes'))
+[surf_lh, surf_rh] = load_conte69();
+labeling = load_parcellation('schaefer',200);
+
+data2plot = repmat(1,200,1);
+
+obj = plot_hemispheres(data2plot, {surf_lh,surf_rh}, ...
+    'parcellation',labeling.schaefer_200, 'views', 'lm');
+set(gcf,'units','points','position',[50,-50,1200,1200])
+colormap([0.9 0.9 0.9])
+saveas(gcf,'x.png')
+I1 = imread('x.png');
+T1 = imcrop(I1, [145, 30, 583, 240]); % only left hemisphere
+
+
+Imerged = imtile({T1},  'BorderSize', 4, 'BackgroundColor', 'white','GridSize', [1,1]);
+imwrite(Imerged,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig1a_brain_gray.png');
+
+
+%% plotting the time series
+% load one data file
+subj = 1;
+
+% listing all participants files
+Files = dir(fullfile('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\raw_data\', '*singleshell.mat'));
+tmp_name = Files(subj).name;
+load(['Z:\TBraiC\JF\HCTSA feature gradients\CamCan\raw_data\' tmp_name]);
+
+% adjust the data according to our schäfer 200 parcel structure
+load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mapping_idx_camcan2schaefer.mat')
+ts = ts(tmp_idx,:,:); % data: for each participant: parcels(214) x trials(30) x samples(3000) --> only use the schäfer 200 parcels
+
+
+figure('color','w','units','normalized','outerposition',[0 0 1 1])
+subplot(3,1,1)
+data2plot = squeeze(ts(1,1,1:1000));
+plot(data2plot,'-','LineWidth',2,'Color',[.3 .3 .3])
+hold on
+ylim([-25 25])
+set(gca,'YColor','none')
+set(gca,'XColor','none')
+box off
+set(gca,'FontSize',30)
+set(gca,'xtick',[])
+set(gca,'ytick',[])
+hold off
+exportgraphics(gca,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig1a_timeseries_grey.png','Resolution',500)
+
+
+%% plotting the power spectrum
+
+% read the power spectrum
+load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\01_specData_all.mat');
+specData_all = specData_all(:,tmp_idx,:);
+
+% take one subject and one aprcel
+data2plot = squeeze(specData_all(1,1,:));
+
+% plot
+figure('Color','white','Position',[1,1,600,400])
+plot(data2plot(2:70),'Color',[.5 .5 .5],'LineWidth',2.5)
+%xlim([2, 60])
+box off
+set(gca,'xtick',[])
+set(gca,'ytick',[])
+exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig1b_powerspectrum.png','Resolution',500)
+
+%% plotting time-series features
+%loading matrix with the data in the form of participant x parcels x features
+load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
+
+% take one participant and one parcel
+data2plot = squeeze(mat_z(1,:,:));
+
+load('lajolla.mat')
+
+% plot as a heatplot
+figure('Color','white','Position',[1,1,1000,400])
+h = heatmap(data2plot,Colormap=flip(lajolla));
+grid off
+h.ColorScaling = 'scaledcolumns';
+
+exportgraphics(h,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig1b_heatmap_hctsa_feat.png','Resolution',500)
+
+
