@@ -1,0 +1,49 @@
+# just create the permutations for a script in matlab where we want to see which t-values can be expected
+
+from neuromaps import stats, images, nulls
+from neuromaps.datasets import fetch_annotation
+from neuromaps.transforms import fslr_to_fsaverage
+from neuromaps.parcellate import Parcellater
+from neuromaps.images import dlabel_to_gifti
+from neuromaps.transforms import fslr_to_fsaverage
+from netneurotools import datasets as nntdata
+import neuromaps
+import os
+import pandas as pd
+import numpy as np
+
+# set path
+infold='Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/DATA/'
+if not(os.path.isdir(infold)):
+    os.mkdir(infold)
+
+
+schaefer = nntdata.fetch_schaefer2018('fslr32k')['200Parcels7Networks'] # load our parcellation in order to parcellate the annoation according to our data
+
+# read our matrix
+featuredata = pd.read_csv(infold + 'feat4spin_hierarchy.csv', header = None)
+featuredata = featuredata.to_numpy()
+
+featuredata.shape[0] # this should be 8 --> StatAvl100 is an der stelle 1, das heißt in python 0
+
+# create rotated, still autocorrelated maps from the hierarchical annotation
+rotated = nulls.alexander_bloch(featuredata[0,:], atlas='fsLR', density='32k', parcellation=dlabel_to_gifti(schaefer),
+                                n_perm=50000, seed=1234)
+
+# save results
+np.savetxt('Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/DATA/spins_StatAvl100_permutations.csv', rotated, delimiter=',', fmt='%s')
+
+
+# do the same thing for delta
+featuredata = pd.read_csv('Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/DATA/feat4spin_hierarchy.csv', header = None)
+featuredata = featuredata.to_numpy()
+#featuredata = np.mean(featuredata,0)
+featuredata = featuredata.T
+nrow, ncol = featuredata.shape
+# this should be 8 --> delta is an der stelle 2, das heißt in python 1
+
+rotated = nulls.alexander_bloch(featuredata[:,1], atlas='fsLR', density='32k', parcellation=dlabel_to_gifti(schaefer),
+                                n_perm=50000, seed=1234)
+
+# save results
+np.savetxt('Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/DATA/spins_delta_permutations.csv', rotated, delimiter=',', fmt='%s')
