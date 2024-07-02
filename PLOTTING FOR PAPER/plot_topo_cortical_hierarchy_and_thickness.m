@@ -1,4 +1,5 @@
 %% PLOT CORTICAL HIERARCHY AND CORTICAL THICKNESS
+filepath = pwd;
 
 load('vik.mat')
 
@@ -8,7 +9,7 @@ labeling = load_parcellation('schaefer',200);
 
 
 %% plotting hierarchy
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
 obj = plot_hemispheres(hierarchy_parc, {surf_lh,surf_rh}, ...
     'parcellation',labeling.schaefer_200, 'views', 'lm');
@@ -18,13 +19,13 @@ saveas(gcf,'x.png')
 I1 = imread('x.png');
 T1 = imcrop(I1, [175, 30, 1100, 240]); % only left hemisphere
 Imerged = imtile({T1},  'BorderSize', 4, 'BackgroundColor', 'white','GridSize', [1,1]);
-imwrite(Imerged,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\topo_cortical_hierarchy.png');
+imwrite(Imerged,[filepath '\PLOTS\topo_cortical_hierarchy.png']);
 
 
 %% plotting cortical thickness
 
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = [];
 
 thick_mean = mean(thickness,1);
@@ -37,4 +38,4 @@ saveas(gcf,'x.png')
 I1 = imread('x.png');
 T1 = imcrop(I1, [175, 30, 1100, 240]); % only left hemisphere
 Imerged = imtile({T1},  'BorderSize', 4, 'BackgroundColor', 'white','GridSize', [1,1]);
-imwrite(Imerged,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\topo_cortical_thickness.png');
+imwrite(Imerged,[filepath '\PLOTS\topo_cortical_thickness.png']);

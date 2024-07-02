@@ -1,6 +1,7 @@
 %% PLOT FREQBANDS TOPOGRAPHIES AVERAGED
+filepath = pwd;
 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\03_specData_freqbands_norm');
+load([filepath '\DATA\03_specData_freqbands_norm']);
 
 freq(1,:) = mean(zscore(delta_norm,[],2),1);
 freq(2,:) = mean(zscore(theta_norm,[],2),1);
@@ -13,7 +14,7 @@ labeling = load_parcellation('schaefer',200);
 
 load('vik.mat')
 
-path = 'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\';
+path = [filepath '\PLOTS\'];
 
 obj = plot_hemispheres(freq(1,:)', {surf_lh,surf_rh}, ...
     'parcellation',labeling.schaefer_200, 'views', 'lm');
@@ -72,7 +73,7 @@ imwrite(Imerged,[path,'Tabl1_topo_freqbands.png']);
 %% PLOT TOPOGRAPHIES FOOOF EXP AND COG
 
 % plot fooof exponent
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\foof_variables.mat')
+load([filepath '\DATA\foof_variables.mat'])
 fooof_plot = mean(zscore(fooof_exp_2_60Hz,[],2),1);
 % we look at the fooof exponent from 2-60 Hz, the other one is from 1-60 Hz
 
@@ -89,7 +90,7 @@ images = imcrop(imread(['x.png']), [170, 30, 1105, 270]);
 imwrite(images,[path, 'Tabl1_topo_FOOOFexp.png']);
 
 % plot peak frrequency: center of gravity
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\peak_freq_cog.mat')
+load([filepath '\DATA\peak_freq_cog.mat'])
 
 peakfreq_plot = mean(zscore(peak_freq_cog,[],2),1);
 
@@ -106,7 +107,7 @@ images = imcrop(imread(['x.png']), [170, 30, 1105, 270]);
 imwrite(images,[path, 'Tabl1_topo_peakfreq.png']);
 
 %% PLOT StatAvl100
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
+load([filepath '\DATA\mat_z.mat'])
 
 % create average over the StatAvl100 feature #448
 data2plot = squeeze(mean(mat_z(:,:,448),1));

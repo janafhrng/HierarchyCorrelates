@@ -8,12 +8,14 @@ clearvars;
 close all
 clc
 
+filepath = pwd;
+
 % loading the the power of different freq bands over all parcels
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\03_specData_freqbands_norm.mat')
+load([filepath '\DATA\03_specData_freqbands_norm.mat'])
 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));     
 
 %% lme to find whether canonical power spectrum features can also descibe cortical hierachry?
@@ -23,7 +25,7 @@ freqbands{1} = zscore(delta_norm,[],2); freqbands{2} = zscore(theta_norm,[],2); 
 for i = 1:5
     freqbands_zscored(i,:) = mean(freqbands{i},1);
 end
-writematrix(freqbands_zscored,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\03_specData_freqbands_norm_zscored.csv')
+writematrix(freqbands_zscored,[filepath '\DATA\03_specData_freqbands_norm_zscored.csv'])
 
 % lmem (allst row1= intercept, row2=hierarchy, row3=age, row4=interation)
 for ifreq = 1:5 % looping through the canonical frequency bands
@@ -51,10 +53,10 @@ end
 
 %% SAME THING WITH CENTRE OF GRAVITY AND FOOOF EXPONENT
 % loading center of gravity of the peak frequency
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\peak_freq_cog.mat')
+load([filepath '\DATA\peak_freq_cog.mat'])
 peak_mean = mean(peak_freq_cog,1);
 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\foof_variables.mat')
+load([filepath '\DATA\foof_variables.mat'])
 
 mat(:,:,1) = zscore(peak_freq_cog,[],2);
 mat(:,:,2) = zscore(fooof_exp,[],2);
@@ -99,7 +101,7 @@ for i = 1:5
 end
 
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = [];
 
 age_years(306,:) = [];   
@@ -134,7 +136,7 @@ end
 %% SAME THING WITH CENTRE OF GRAVITY AND FOOOF EXPONENT AND CORTICAL THICKNESS
 % loading center of gravity of the peak frequency
 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\foof_variables.mat')
+load([filepath '\DATA\foof_variables.mat'])
 mat(:,:,1) = zscore(peak_freq_cog,[],2);
 mat(:,:,2) = zscore(fooof_exp,[],2);
 mat(:,:,3) = zscore(fooof_exp_2_60Hz,[],2);

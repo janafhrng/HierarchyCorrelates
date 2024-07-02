@@ -2,14 +2,14 @@ clearvars;
 close all
 clc
 
-%% loading all data
-%addpath(genpath('C:\Users\fehring\sciebo\Toolboxes\'))
+filepath = pwd;
 
+%% loading all data
 %loading matrix with the data in the form of participant x parcels x features
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subj_feat_reordered_schafer200.mat');
+load([filepath '\DATA\all_subj_feat_reordered_schafer200.mat']);
 
 % loading the feature file with the complete list of features 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\features_selected.mat');
+load([filepath '\DATA\features_selected.mat']);
 features= labels_selected;
 
 %% Preparing for a LMM: take nans out, average, z-score
@@ -35,8 +35,8 @@ for i = 1:size(mat_clean,3)
     mat_z(:,:,i) = zscore(tmp_mat, 0, 2);
 end
 
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat',"mat_z", '-v7.3')
-writetable(features, 'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\features_z.csv','WriteRowNames',true)
+save([filepath '\DATA\mat_z.mat'],"mat_z", '-v7.3')
+writetable(features, [filepath '\DATA\features_z.csv'],'WriteRowNames',true)
 
 
 

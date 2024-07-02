@@ -1,20 +1,21 @@
 % plot the data for a figure how to compute statavl100
+filepath = pwd;
 
 % plots for the features: DN_RemovePoints_absclose_08_remove_ac2diff and StatAvl100
 load('lajolla10.mat')
 load('vik.mat')
 
 % adjust the data according to our schäfer 200 parcel structure
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mapping_idx_camcan2schaefer.mat')
+load([filepath '\DATA\mapping_idx_camcan2schaefer.mat'])
 
-% loading the data of the respective participant
+% loading the data of the respective participant --> cannot be done in the published code, for this access to the CAMCan repository is neccessary
 % listing all participants files
-Files = dir(fullfile('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\raw_data\', '*singleshell.mat'));
+Files = dir(fullfile([filepath '\raw_data\', '*singleshell.mat']));
 
 % finding parcels which are low, medium or high in StatAvl100
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
+load([filepath '\DATA\mat_z.mat'])
 % loading the feature file with the complete list of features
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\features_selected.mat');
+load([filepath '\DATA\features_selected.mat']);
 features= labels_selected;
 % find the feature index
 index = find(strcmp(features.Name,'StatAvl100'));
@@ -45,11 +46,11 @@ obj = plot_hemispheres(data2plot', {surf_lh,surf_rh},'parcellation',labeling.sch
 colormap([0.7 0.7 0.7; colors])
 
 
-
+%% NOT POSSIBLE IN THE PUBLISHED CODE
 %% load one data file
 subj = 2;
 tmp_name = Files(subj).name;
-load(['Z:\TBraiC\JF\HCTSA feature gradients\CamCan\raw_data\' tmp_name]);
+load([filepath '\raw_data\' tmp_name]);
 ts = ts(tmp_idx,:,:); % data: for each participant: parcels(214) x trials(30) x samples(3000) --> only use the schäfer 200 parcels
 
 for i = 1:4; ticks{i} = num2str(round(i*100/300*1000));end
@@ -101,7 +102,7 @@ xticklabels([ticks])
 set(gca,'FontSize',30)
 hold off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig2b_computation_StatAvl_100.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\Fig2b_computation_StatAvl_100.png'],'Resolution',500)
 
 
 

@@ -2,20 +2,22 @@ clearvars;
 close all
 clc
 
+filepath = pwd;
+
 %loading matrix with the data in the form of features x parcels
 % matrix is already z-scored 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
+load([filepath '\DATA\mat_z.mat'])
 
 % loading the feature file with the complete list of features 
-features = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\features_z.csv');
+features = readtable([filepath '\DATA\features_z.csv']);
 
 % load demographics. columns: participant code,age,sex(1 = male),
 % intraccranial volume
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 
 % load the parcellated map
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
 % extract the statistics of the linear mixed effect model for each feature
 subj=[];
@@ -50,14 +52,14 @@ for ifeature=1:size(mat_z,3) % loop over features
 end
 
 % save lme statistics
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\lme_out_age_effect_hierarchy.mat','allst','pval', '-v7.3');
-writematrix(allst,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\lme_out_age_effect_hierarchy.csv');
+save([filepath '\DATA\lme_out_age_effect_hierarchy.mat'],'allst','pval', '-v7.3');
+writematrix(allst,[filepath '\DATA\lme_out_age_effect_hierarchy.csv']);
 
 
 
 %% PLOT FOR SUPPLEMENTARY
 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\lme_out_age_effect_hierarchy.mat')
+load([filepath '\DATA\lme_out_age_effect_hierarchy.mat'])
 
 % plot distribution of t-values main effect hierarchy
 index = find(abs(allst(:,3))> 70);
@@ -77,7 +79,7 @@ set(gca,'FontSize',14)
 box off
 hold on;
 line([79.5 79.5], [0 39],'LineStyle','--', 'LineWidth', 2, 'Color',[.7 .7 .7]);
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_hist_main_hierarchy_tValues.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_hist_main_hierarchy_tValues.png'],'Resolution',500)
 
 % plot distribution of t-values interaction effect hierarchy and age
 index = find(abs(allst(:,4)) >20);
@@ -97,5 +99,5 @@ set(gca,'FontSize',14)
 box off
 hold on;
 line([31 31], [0 85],'LineStyle','--', 'LineWidth', 2, 'Color',[.7 .7 .7]);
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_hist_interaction_hierarchy_age_tValues.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_hist_interaction_hierarchy_age_tValues.png'],'Resolution',500)
 

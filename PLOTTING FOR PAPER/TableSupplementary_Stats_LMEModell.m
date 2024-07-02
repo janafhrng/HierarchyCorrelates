@@ -1,10 +1,10 @@
 %% LIST OF THE 50 TOP FEATURES IN LMEM FOR MAIN CORTICAL HIERARCHY
 
 % loading the feature file with the complete list of features 
-features = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\features_z.csv');
+features = readtable([filepath '\DATA\features_z.csv']);
 
 % loading lme stats
-allst = readmatrix('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\lme_out_age_effect_hierarchy.csv');
+allst = readmatrix([filepath '\DATA\lme_out_age_effect_hierarchy.csv']);
 
 % ranking the features
 % we rank the features according to the highes t-score in order to find
@@ -15,7 +15,7 @@ t_ranked = t(rank);
 features_ranked = features(rank,:);
 
 data2plot = [features_ranked(1:50,"Var2"),array2table(t_ranked(1:50))];
-writetable(data2plot,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_list_top50_main_corticalHierarchy.csv')
+writetable(data2plot,[filepath '\PLOTS\SUPPL_list_top50_main_corticalHierarchy.csv'])
 
 %% LIST OF THE 50 TOP FEATURES IN LMEM FOR Interaction Effect CORTICAL HIERARCHY * AGE
 
@@ -29,7 +29,7 @@ t_ranked = t(rank);
 features_ranked = features(rank,:);
 
 data2plot = [features_ranked(1:50,"Var2"),array2table(t_ranked(1:50))];
-writetable(data2plot,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_list_top50_interaction_corticalHierarchy&Age.csv')
+writetable(data2plot,[filepath '\PLOTS\SUPPL_list_top50_interaction_corticalHierarchy&Age.csv'])
 
 
 
@@ -37,15 +37,15 @@ writetable(data2plot,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\P
 
 %loading matrix with the data in the form of features x parcels
 % matrix is already z-scored 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
+load([filepath '\DATA\mat_z.mat'])
 
 % load demographics. columns: participant code,age,sex(1 = male),
 % intraccranial volume
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath 'h\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 
 % load the parcellated map
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
 % statavl (#448) & hierarchy
 for ifeature=448%:size(mat_z,3) % loop over features
@@ -73,16 +73,16 @@ for ifeature=448%:size(mat_z,3) % loop over features
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_StatAvl100_hierarchy',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_StatAvl100_hierarchy'],tab1)
 
 
 %% statavl (#448) & thickness
 mat_z(306,:,:) = [];
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\gradient analysis\data\Input\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = [];
 % load age data
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\demographic effects\data\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));   
 age_years(306) = [];
 
@@ -112,17 +112,17 @@ for ifeature=448%1:size(mat_z,3) % loop over features
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_StatAvl100_thickness',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_StatAvl100_thickness'],tab1)
 
 
 
 
 %% delta and hierarchy
 % loading the the power of different freq bands over all parcels
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\03_specData_freqbands_norm.mat')
+load([filepath '\DATA\03_specData_freqbands_norm.mat'])
 freqbands{1} = zscore(delta_norm,[],2); 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+load([filepath '\DATA\hierarchy_parc.csv'])
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));     
 
 for ifreq = 1%:5 % looping through the canonical frequency bands
@@ -150,13 +150,13 @@ for ifreq = 1%:5 % looping through the canonical frequency bands
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_delta_hierarchy',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_delta_hierarchy'],tab1)
 
 %% delta and thickness
 % loading the the power of different freq bands over all parcels
 freqbands{1}(306,:) = [];
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = [];
 age_years(306,:) = [];       
 
@@ -185,15 +185,15 @@ for ifreq = 1%:5 % looping through the canonical frequency bands
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_delta_thickness',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_delta_thickness'],tab1)
 
 
 %% ALPHA and HIERARCHY and AGE
 % loading the the power of different freq bands over all parcels
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\03_specData_freqbands_norm.mat')
+load([filepath '\DATA\03_specData_freqbands_norm.mat'])
 freqbands{1} = zscore(alpha_norm,[],2); 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+load([filepath '\DATA\hierarchy_parc.csv'])
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));     
 
 for ifreq = 1%:5 % looping through the canonical frequency bands
@@ -221,13 +221,13 @@ for ifreq = 1%:5 % looping through the canonical frequency bands
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_alpha_hierarchy',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_alpha_hierarchy'],tab1)
 
 %% ALPHA and THICKNESS and AGE
 % loading the the power of different freq bands over all parcels
 freqbands{1}(306,:) = [];
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = [];
 age_years(306,:) = [];       
 
@@ -256,22 +256,22 @@ for ifreq = 1%:5 % looping through the canonical frequency bands
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_alpha_thickness',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_alpha_thickness'],tab1)
 
 
 %% AC40 & hierarchy & AGE
 
 %loading matrix with the data in the form of features x parcels
 % matrix is already z-scored 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
+load([filepath '\DATA\mat_z.mat'])
 
 % load demographics. columns: participant code,age,sex(1 = male),
 % intraccranial volume
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 
 % load the parcellated map
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
 % AC40 (#123) & hierarchy
 for ifeature=123%:size(mat_z,3) % loop over features
@@ -299,16 +299,16 @@ for ifeature=123%:size(mat_z,3) % loop over features
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_AC40_hierarchy',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_AC40_hierarchy'],tab1)
 
 
 %% Ac40 & thickness & age
 mat_z(306,:,:) = [];
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\gradient analysis\data\Input\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\Input\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = [];
 % load age data
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\demographic effects\data\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));   
 age_years(306) = [];
 
@@ -338,21 +338,21 @@ for ifeature=123%1:size(mat_z,3) % loop over features
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_AC40_thickness',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_AC40_thickness'],tab1)
 
 
 %% AMI40 & hierarchy & AGE
 
 % save ami
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\ami_1_40.mat')
+load([filepath '\DATA\ami_1_40.mat'])
 
 % load demographics. columns: participant code,age,sex(1 = male),
 % intraccranial volume
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 
 % load the parcellated map
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
 % AMI40 (#40) & hierarchy
 for ifeature=40
@@ -380,16 +380,16 @@ for ifeature=40
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_AMI40_hierarchy',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_AMI40_hierarchy'],tab1)
 
 
 %% AMI40 & thickness & age
 ami_out(306,:,:) = [];
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\gradient analysis\data\Input\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = [];
 % load age data
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\demographic effects\data\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));   
 age_years(306) = [];
 
@@ -419,4 +419,4 @@ for ifeature=40%1:size(mat_z,3) % loop over features
 end
 
 tab1 = table2cell(dataset2table(lme.Coefficients));
-xlswrite('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_LMEMresults_AMI40_thickness',tab1)
+xlswrite([filepath '\PLOTS\SUPPL_LMEMresults_AMI40_thickness'],tab1)

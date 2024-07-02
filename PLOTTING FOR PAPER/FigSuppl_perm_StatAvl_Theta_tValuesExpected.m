@@ -1,23 +1,23 @@
+filepath = pwd;
+
 %% what kind of t-values can be expected?
 
 %% STATAVL100
 
 % use the permutations from python where we create 50.000 permutations
 % with alexander bloch 
-permutations = readmatrix('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Joachims\data\spins_StatAvl100_permutations.csv');
+permutations = readmatrix([filepath '\DATA\spins_StatAvl100_permutations.csv']);
 
 % load demogrpahics in order to catch the age in years
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\demographic effects\data\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));      
 
 
 % load the parcellated map of cortical hierarchy (sydnor et al., 2021)
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\correlations to structural measures\data\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
 
 %% null distribution for randomly expactable t-values
-
-
 % extract the statistics of the linear mixed effect model for each feature
 subj=[];
 parcel=[];
@@ -75,14 +75,14 @@ xline(80.11,'r--','LineWidth',2,'Alpha',0.7) % StatAvl100
 
 box off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Results\plots paper\hist_perm_statavl_tvalues.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_hist_perm_statavl_tvalues.png'],'Resolution',500)
 
 
 
-%% THETA
+%% DELTA
 % use the permutations from python where we create 50.000 permutations
 % with alexander bloch 
-permutations = readmatrix('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Joachims\data\spins_theta_permutations.csv');
+permutations = readmatrix([filepath '\DATA\spins_delta_permutations.csv']);
 
 % extract the statistics of the linear mixed effect model for each feature
 subj=[];
@@ -141,7 +141,7 @@ xline(78.1,'r--','LineWidth',2,'Alpha',0.7) % StatAvl100
 
 box off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Results\plots paper\hist_perm_theta_tvalues.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\hist_perm_delta_tvalues.png'],'Resolution',500)
 
 
 

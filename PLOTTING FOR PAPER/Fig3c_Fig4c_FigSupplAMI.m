@@ -1,3 +1,5 @@
+filepath = pwd;
+
 %% PLOTTING AMI OVER DIFFERENT AGES
 load('vik.mat')
 load('lipari10.mat')
@@ -5,15 +7,15 @@ load('lajolla10.mat')
 load("batlow10.mat")
 
 % load ami from lag 1 to 40
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Results\plotting\ami_1_40.mat')
+load([filepath '\DATA\ami_1_40.mat'])
 
 % finding participants in different age ranges
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 index_age_group = [1:50;151:200;301:350];
 
 % finding parcels which are low, medium or high in cortical hierarchy
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 [~,hierarchy_sorted] = sort(hierarchy_parc,'ascend');
 idx_h_min = hierarchy_sorted(1:10);
 idx_h_med = hierarchy_sorted(96:105);
@@ -68,7 +70,7 @@ for cond = 1:3
     set(gca, 'Color', 'None');
 end  
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig4b_interarction_AMI_age.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\Fig4b_interarction_AMI_age.png'],'Resolution',500)
 
 %% Figure 3c AMI lag 40 across age topography
 
@@ -118,7 +120,7 @@ set(gca,'box','off')
 set(gca,'FontSize',14)
 hold off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig3c_scatter_linfit_AMI40_age.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\Fig3c_scatter_linfit_AMI40_age.png'],'Resolution',500)
 
 %% Figure 3c AMI lag 40 across age topography
 
@@ -148,7 +150,7 @@ T2 = imcrop(I1, [145, 315, 583, 240]);
 T3 = imcrop(I1, [145, 600, 583, 240]);
 
 Imerged = imtile({T1,T2,T3},  'BorderSize', 4, 'BackgroundColor', 'white','GridSize', [1,3]);
-imwrite(Imerged,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig3c_AMI_topo_across_age.png');
+imwrite(Imerged,[filepath '\PLOTS\Fig3c_AMI_topo_across_age.png']);
 
 
 %% SUPPLEMENTARY: boxplots AMI40 
@@ -180,6 +182,6 @@ xlabel('age group')
 ylabel('auto mutual information')
 hold off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_bloxplot_AMI40_age.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_bloxplot_AMI40_age.png'],'Resolution',500)
 
 

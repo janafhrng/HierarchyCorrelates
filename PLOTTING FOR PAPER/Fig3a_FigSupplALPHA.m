@@ -1,3 +1,5 @@
+filepath = pwd;
+
 %% PLOTTING ALPHA OVER DIFFERENT AGES
 load('vik.mat')
 load('lipari10.mat')
@@ -5,19 +7,19 @@ load('lajolla10.mat')
 load("batlow10.mat")
 
 % finding participants in different age ranges
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 index_age_group = [1:50;151:200;301:350];
 
 % finding parcels which are low, medium or high in cortical hierarchy
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 [~,hierarchy_sorted] = sort(hierarchy_parc,'ascend');
 idx_h_min = hierarchy_sorted(1:10);
 idx_h_med = hierarchy_sorted(96:105);
 idx_h_max = hierarchy_sorted(191:200);
 
 % loading theta
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\03_specData_freqbands_norm',"alpha_norm");
+load([filepath '\DATA\03_specData_freqbands_norm'],"alpha_norm");
 data2plot = alpha_norm;
 
 %addpath(genpath('C:\Users\fehring\sciebo\Toolboxes'))
@@ -46,7 +48,7 @@ T2 = imcrop(I1, [145, 315, 583, 240]);
 T3 = imcrop(I1, [145, 600, 583, 240]);
 
 Imerged = imtile({T1,T2,T3},  'BorderSize', 4, 'BackgroundColor', 'white','GridSize', [1,3]);
-imwrite(Imerged,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig3a_alpha_topo_across_age.png');
+imwrite(Imerged,[filepath '\PLOTS\Fig3a_alpha_topo_across_age.png']);
 
 
 
@@ -107,7 +109,7 @@ set(gca,'box','off')
 set(gca,'FontSize',14)
 hold off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig3a_scatter_linfit_alpha_age.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\Fig3a_scatter_linfit_alpha_age.png'],'Resolution',500)
 
 
 %% Supplementary boxplots ALPHA
@@ -139,12 +141,4 @@ xlabel('age group')
 ylabel('alpha power')
 hold off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_bloxplot_alpha_age.png','Resolution',500)
-
-
-
-
-
-
-
-
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_bloxplot_alpha_age.png'],'Resolution',500)

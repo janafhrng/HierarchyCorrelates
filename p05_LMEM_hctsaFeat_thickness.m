@@ -2,27 +2,29 @@ clearvars;
 close all
 clc
 
+filepath = pwd;
+ 
 %% data
 % we decided to take participant number 306 out, becuase their cortical
 % thickness value diviates too much from the others
 
 %loading matrix with the data in the form of features x parcels
 % matrix is already z-scored 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
+load([filepath '\DATA\mat_z.mat'])
 mat_z(306,:,:) = [];
 
 % loading the feature file with the complete list of features 
-features = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\features_z.csv');
+features = readtable([filepath '\DATA\features_z.csv']);
 
 % load the labeling of parcels in the schäfer200 atlas
 [surf_lh, surf_rh] = load_conte69();
 labeling = load_parcellation('schaefer',200);
 
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = [];
 
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));   
 age_years(306) = [];
 
@@ -52,4 +54,4 @@ for ifeature=1:size(mat_z,3) % loop over features
 end
 
 % save lme statistics
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\lme_hctsa_cortical_thickness_tstats.mat','allst','pval', '-v7.3');
+save([filepath '\DATA\lme_hctsa_cortical_thickness_tstats.mat'],'allst','pval', '-v7.3');

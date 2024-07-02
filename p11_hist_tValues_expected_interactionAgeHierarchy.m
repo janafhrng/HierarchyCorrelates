@@ -5,15 +5,17 @@
 % relationship with the change of time-series features across cortical
 % hierarchy
 
+filepath = pwd;
+
 % load age
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 
 % load the parcellated map of cortical hierarchy (sydnor et al., 2021)
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
-features = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\features_z.csv');
+load([filepath '\DATA\mat_z.mat'])
+features = readtable([filepath '\DATA\features_z.csv']);
 
 
 %% AC at lag 133 ms
@@ -70,7 +72,7 @@ lm_sorted(idxmin5) % -9.06
 lm_sorted(idxmin1) % -11.68
 
 % save allst_AC just in case
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\surrogate_interarction_age_hierarchy_4AC40_results.mat',"allst_AC")
+save([filepath '\DATA\surrogate_interarction_age_hierarchy_4AC40_results.mat'] ,"allst_AC")
 
 figure('Color','w')
 h = histogram(allst_AC(:,4),'NumBins',20)
@@ -85,10 +87,10 @@ xline(41.06,'r--','LineWidth',2,'Alpha',0.7) % StatAvl100
 
 box off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_hist_AC40_tValues_interactionAgeHierarchy_permAge.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_hist_AC40_tValues_interactionAgeHierarchy_permAge.png'],'Resolution',500)
 
 %% AMI40
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\ami_1_40.mat')
+load([filepath '\DATA\ami_1_40.mat'])
 ami = squeeze(ami_out(:,:,40));
 %zscore
 ami_z= zscore(ami,[],2);
@@ -143,7 +145,7 @@ lm_sorted(idxmin5) % -5.21
 lm_sorted(idxmin1) % -6.71
 
 % save allst_AC just in case
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\surrogate_interarction_age_hierarchy_4AMI40_results.mat',"allst_AMI")
+save([filepath '\DATA\surrogate_interarction_age_hierarchy_4AMI40_results.mat'],"allst_AMI")
 
 figure('Color','w')
 h = histogram(allst_AMI(:,4),'NumBins',20)
@@ -158,12 +160,12 @@ xline(21.65,'r--','LineWidth',2,'Alpha',0.7) % StatAvl100
 
 box off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_hist_AMI40_tValues_interactionAgeHierarchy_permAge.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_hist_AMI40_tValues_interactionAgeHierarchy_permAge.png'],'Resolution',500)
 
 
 %% ALPHA 
 % loading theta
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\03_specData_freqbands_norm',"alpha_norm");
+load([filepath '\DATA\03_specData_freqbands_norm'],"alpha_norm");
 alpha_z = zscore(alpha_norm,[],2);
 
 % extract the statistics of the linear mixed effect model for each feature
@@ -216,7 +218,7 @@ lm_sorted(idxmin5) % -4.55
 lm_sorted(idxmin1) % -5.91
 
 % save allst_AC just in case
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\surrogate_interarction_age_hierarchy_4alpha_results.mat',"allst_alpha")
+save([filepath '\DATA\surrogate_interarction_age_hierarchy_4alpha_results.mat'],"allst_alpha")
 
 figure('Color','w')
 h = histogram(allst_AC(:,4),'NumBins',20)
@@ -231,7 +233,7 @@ xline(21.4,'r--','LineWidth',2,'Alpha',0.7) % StatAvl100
 
 box off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_hist_alpha_tValues_interactionAgeHierarchy_permAge.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_hist_alpha_tValues_interactionAgeHierarchy_permAge.png'],'Resolution',500)
 
 
 

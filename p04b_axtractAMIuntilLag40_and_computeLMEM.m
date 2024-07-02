@@ -1,22 +1,26 @@
 %% calculating the AMI for the lags 0-40 --> like for autocorrelation
+% the execution of parts of this code is not possible within this repository, because the individual MEG DATA musst be assecces via the CAMCan repository. 
+% However, the here computed feature is accessible within the DATA folder
+
+filepath = pwd;
 
 % loading the data of the respective participant
 % listing all participants files
-Files = dir(fullfile('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\raw_data\', '*singleshell.mat'));
+Files = dir(fullfile([filepath '\raw_data\'], '*singleshell.mat'));
 
 % adjust the data according to our schäfer 200 parcel structure
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mapping_idx_camcan2schaefer.mat')
+load([filepath '\DATA\mapping_idx_camcan2schaefer.mat'])
 
 % finding parcels which are low, medium or high in cortical hierarchy
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
 % finding participants in different age ranges
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 
 for subj = 1:350
     tmp_name = Files(subj).name;
-    load(['Z:\TBraiC\JF\HCTSA feature gradients\CamCan\raw_data\' tmp_name]);
+    load([[filepath '\raw_data\'] tmp_name]);
     ts = ts(tmp_idx,:,:); % data: for each participant: parcels(214) x trials(30) x samples(3000) --> only use the schäfer 200 parcels
 
     for parcel = 1:200
@@ -32,7 +36,7 @@ for subj = 1:350
 end
 
 % save ami
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\ami_1_40.mat','ami_out')
+save([filepath '\DATA\ami_1_40.mat'],'ami_out')
 
 %% find t-values from the lme for hierarchy
 
@@ -65,11 +69,11 @@ for ifeature=1:40 % loop over AMI features
 end
 
 % save ami
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\ami_1_40_tstat.mat','allst')
+save([filepath '\DATA\ami_1_40_tstat.mat'],'allst')
 
 %% what about cortical thickness? compute lme
 % loading cortical thickness
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\thickness_smoothed_12_schaefer200_reordered.mat');
+load([filepath '\DATA\thickness_smoothed_12_schaefer200_reordered.mat']);
 thickness(306,:) = []; % too little correlation to the mean of all subj
 
 age_years(306) = [];

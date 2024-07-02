@@ -21,13 +21,16 @@ clc
 % parcellation according to the way the schäfer 200 parcels are sorted.
 % - parcel coordinates: the parcel coordinates only have to be reordered
 % when we use the averaged parcel coordinates.
+
+filepath = pwd;
  
 %% load coordinates
 % online coordinates
-labels_online = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\Schaefer2018_200Parcels_7Networks_order_FSLMNI152_1mm.Centroid_RAS.csv');
+labels_online = readtable([filepath '\DATA\Schaefer2018_200Parcels_7Networks_order_FSLMNI152_1mm.Centroid_RAS.csv']);
+
 
 % fsaverage coordinates to average across vertex
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\Schaefer2018_200Parcels_7Networks_suma-all-fsaverage-10.mat')
+load([filepath '\DATA\Schaefer2018_200Parcels_7Networks_suma-all-fsaverage-10.mat'])
 
 %% create averaged coordinates for parcels
 % map vertices to the parcels we are interested in and average across
@@ -52,12 +55,12 @@ for i = 1:200
 end
 
 % save tmp_idx
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mapping_idx_camcan2schaefer','tmp_idx');
+save([filepath '\DATA\mapping_idx_camcan2schaefer'],'tmp_idx');
 
 %% load data matrix and average across time segments
 % loading all data: cell structure with 1 cell per participant (350)
 % with a matrix containing: parcels(214) x hcsta features (5961)
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subj_feat.mat');
+load([filepath '\DATA\all_subj_feat.mat']);
 
 % now we restucture this into 1 matrix containing: 
 % parciticpants x parcels x features
@@ -69,15 +72,15 @@ end
 % change the sorting of the data matrix from fsaverage to schäfer200
 % look at the matrix only at the schäfer200 positions
 mat = mat(:,tmp_idx,:);
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subj_feat_reordered_schafer200', "mat", '-v7.3');
+save([filepath '\DATA\all_subj_feat_reordered_schafer200'], "mat", '-v7.3');
 
 %% sort the whole power spectrum accordingly
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\01_specData_all.mat','specData_all')
+load([filepath '\DATA\01_specData_all.mat'],'specData_all')
 specData = specData_all(:,tmp_idx,:);
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\02_specData_all_reordered_schaefer200.mat', "specData");
+save([filepath '\DATA\02_specData_all_reordered_schaefer200.mat'], "specData");
 
 %% sort cortical thinkness accordingly
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\thickness_smoothed_12_schaefer200.mat')
+load([filepath '\DATA\thickness_smoothed_12_schaefer200.mat'])
 % reoder this matrix, so that in the end we have: participant(350) x parcel(214)
 thickness  = zeros(350,214);
 
@@ -86,10 +89,10 @@ for i = 1:350
 end
 
 thickness = thickness(:,tmp_idx);
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\thickness_smoothed_12_schaefer200_reordered', "thickness");
+save([filepath 'Z\DATA\thickness_smoothed_12_schaefer200_reordered'], "thickness");
 
 %% change the sorting of centre of gravity (alpha peak frequency)
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subjects_paf_cog.mat')
+load([filepath '\DATA\all_subjects_paf_cog.mat'])
 
 peak_freq_cog  = zeros(350,214);
 for i = 1:350 
@@ -97,17 +100,17 @@ for i = 1:350
 end
 
 peak_freq_cog = peak_freq_cog(:,tmp_idx);
-writematrix(peak_freq_cog,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\peak_freq_cog.csv')
+writematrix(peak_freq_cog,[filepath '\DATA\peak_freq_cog.csv'])
 
 %% change the sorting of FOOF variables (offset and exponent)
 %The data contains on the FOOF offset and exponent for the fe data from
 %1-60Hz AND 2-60Hz (these are marked differently)
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subjects_fooof_exp_2_60Hz.mat');
+load([filepath '\DATA\all_subjects_fooof_exp_2_60Hz.mat']);
 all_subjects_exponent_2_60Hz = all_subjects_exponent;
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subjects_fooof_exp.mat','all_subjects_exponent');
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subjects_fooof_offs_2_60Hz.mat');
+load([filepath '\DATA\all_subjects_fooof_exp.mat'],'all_subjects_exponent');
+load([filepath '\DATA\all_subjects_fooof_offs_2_60Hz.mat']);
 all_subjects_offset_2_60Hz = all_subjects_offset;
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subjects_fooof_offs.mat');
+load([filepath '\DATA\all_subjects_fooof_offs.mat']);
 
 fooof_exp  = zeros(350,214);
 fooof_exp_2_60Hz  = zeros(350,214);
@@ -126,10 +129,10 @@ fooof_exp_2_60Hz = fooof_exp_2_60Hz(:,tmp_idx);
 fooof_offs = fooof_offs(:,tmp_idx);
 fooof_offs_2_60Hz = fooof_offs_2_60Hz(:,tmp_idx);
 
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\foof_variables.mat', "fooof_exp","fooof_offs_2_60Hz","fooof_offs","fooof_exp_2_60Hz");
-writematrix(fooof_exp,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\fooof_exp.csv')
-writematrix(fooof_exp_2_60Hz,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\fooof_exp_2_60Hz.csv')
-writematrix(fooof_offs,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\fooof_offs.csv')
-writematrix(fooof_offs_2_60Hz,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\fooof_offs_2_60Hz.csv')
+save([filepath '\DATA\foof_variables.mat'], "fooof_exp","fooof_offs_2_60Hz","fooof_offs","fooof_exp_2_60Hz");
+writematrix(fooof_exp,[filepath '\DATA\fooof_exp.csv'])
+writematrix(fooof_exp_2_60Hz,[filepath '\DATA\fooof_exp_2_60Hz.csv'])
+writematrix(fooof_offs,[filepath '\DATA\fooof_offs.csv'])
+writematrix(fooof_offs_2_60Hz,[filepath '\DATA\fooof_offs_2_60Hz.csv'])
 
 

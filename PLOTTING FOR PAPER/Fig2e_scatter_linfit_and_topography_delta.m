@@ -1,9 +1,10 @@
 %% lin fit for theta as this has the highest lme values for the main effect of corticla hierarchy
+filepath = pwd;
 
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 
 % loading theta
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\03_specData_freqbands_norm',"delta_norm");
+load([filepath '\DATA\03_specData_freqbands_norm'],"delta_norm");
 delta_mean = mean(zscore(delta_norm,[],2),1);
 
 load("vik.mat")
@@ -48,5 +49,5 @@ ylabel('delta power','FontSize',16)
 ylim([-1.2 1.2])
 set(gca,'box','off') 
 set(gca,'FontSize',20)
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig2e_scatter_linfit_delta.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\Fig2e_scatter_linfit_delta.png'],'Resolution',500)
 

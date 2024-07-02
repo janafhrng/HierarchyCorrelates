@@ -1,6 +1,8 @@
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\mat_z.mat')
-features = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\features_z.csv');
+filepath = pwd;
+
+load([filepath '\DATA\hierarchy_parc.csv'])
+load([filepath '\DATA\mat_z.mat'])
+features = readtable([filepath '\DATA\features_z.csv']);
 
 load('vik.mat')
 
@@ -52,7 +54,7 @@ ylabel('stationarity of the mean','FontSize',16)
 set(gca,'box','off') 
 set(gca,'FontSize',20)
 ylim([-2 3.2])
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig2d_scatter_linfit_statAvl100.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\Fig2d_scatter_linfit_statAvl100.png'],'Resolution',500)
 
 %% stats
 lm_h
@@ -72,5 +74,5 @@ colormap([0.7 0.7	0.7;vik])
 set(gcf,'units','points','position',[50,-50,1200,1200])
 saveas(gcf,['x.png'])
 images = imcrop(imread(['x.png']),[170, 30, 1105, 270]);
-imwrite(images,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Results\plots paper\topo_StatAvl100.png');
+imwrite(images,[filepath '\PLOTS\topo_StatAvl100.png']);
  

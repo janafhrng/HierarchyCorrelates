@@ -7,23 +7,24 @@ library(scico)
 library(RColorBrewer)
 library(Cairo)
 
+filepath = getwd()
 
 ##### LME MAIN EFFECT CORTICAL HIERARCHY #####
 nfeat = 50
 
 # Load lme t values
-tval <- read.csv('Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/DATA/lme_out_age_effect_hierarchy.csv', header = F)
+tval <- read.csv(paste(filepath,'/DATA/lme_out_age_effect_hierarchy.csv',sep=""), header = F)
 tval_h <- tval$V3
 tval_sort = sort(abs(tval_h),decreasing = T)[1:50]
 index = order(abs(tval_h),decreasing = T)
 
 # load features and numeric feature matrix and sort them according to this index
-mat_z <- read_mat("Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/DATA/mat_z.mat")
+mat_z <- read_mat(paste(filepath,"/DATA/mat_z.mat" ,sep=""))
 df <- mat_z[[1]]
 mat_z_sort = df[,,index]
 mat_z_sort <- mat_z_sort[,,1:50]
 
-table <- read.csv('Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/DATA/features_z.csv', header = F)
+table <- read.csv(paste(filepath,'/DATA/features_z.csv' ,sep=""), header = F)
 table_sort = table[index,]
 features_sort = table_sort[1:50,]
 
@@ -49,7 +50,7 @@ windowsFonts(A = windowsFont("Calibri"))
 Cairo::Cairo(
   45, #length
   25, #width
-  file = paste("Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/PLOTS/Fig2a_cluster_main_hierarchy_hctsa", ".png", sep = ""),
+  file = paste(filepath, "/PLOTS/Fig2a_cluster_main_hierarchy_hctsa", ".png", sep = ""),
   type = "png", #tiff
   bg = "transparent", #white or transparent depending on your requirement 
   dpi = 500,

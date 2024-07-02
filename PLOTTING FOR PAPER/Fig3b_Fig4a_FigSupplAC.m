@@ -1,16 +1,18 @@
 %% PLOTTING AUTOCORRELATION OVER DIFFERENT AGES
+filepath = pwd;
+
 load('vik.mat')
 load('lipari10.mat')
 load('lajolla10.mat')
 load("batlow10.mat")
 
 % finding participants in different age ranges
-demographics = readtable('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\demo_all_subjects.csv');
+demographics = readtable([filepath '\DATA\demo_all_subjects.csv']);
 age_years = table2array(demographics(:,2));
 index_age_group = [1:50;151:200;301:350];
 
 % finding parcels which are low, medium or high in cortical hierarchy
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\hierarchy_parc.csv')
+load([filepath '\DATA\hierarchy_parc.csv'])
 [~,hierarchy_sorted] = sort(hierarchy_parc,'ascend');
 idx_h_min = hierarchy_sorted(1:10);
 idx_h_med = hierarchy_sorted(96:105);
@@ -19,12 +21,12 @@ hierarchy_labels = {'idx_h_min','idx_h_med','idx_h_max'};
 
 % load feature of interest (here AC1-40)
 %loading matrix with the data in the form of participant x parcels x features
-load('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\all_subj_feat_reordered_schafer200.mat');
+load([filepath '\DATA\all_subj_feat_reordered_schafer200.mat']);
 
 % find the features AC1 - AC40
 idx = 84:123;
 % load the tstatistics for AC1:40
-allst = readmatrix('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\lme_out_age_effect_hierarchy.csv');
+allst = readmatrix([filepath '\DATA\lme_out_age_effect_hierarchy.csv']);
 tAC = allst(idx,:);
 
 
@@ -72,7 +74,7 @@ for cond = 1:3
 
 end  
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig4a_interarction_AC_age.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\Fig4a_interarction_AC_age.png'],'Resolution',500)
 
 
 %% Figure 4 plotting the parcels for legend
@@ -95,7 +97,7 @@ set(gcf,'units','points','position',[50,-50,1200,1200])
 colormap([0.7 0.7 0.7; colors])
 saveas(gcf,['x.png'])
 images = imcrop(imread(['x.png']),[170, 30, 1105, 270]);
-imwrite(images,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig4_topo_parcels_legend.png');
+imwrite(images,[filepath '\PLOTS\Fig4_topo_parcels_legend.png']);
 
 
 %% Figure 3b AC lag 40 across age topography
@@ -123,7 +125,7 @@ T2 = imcrop(I1, [145, 315, 583, 240]);
 T3 = imcrop(I1, [145, 600, 583, 240]);
 
 Imerged = imtile({T1,T2,T3},  'BorderSize', 4, 'BackgroundColor', 'white','GridSize', [1,3]);
-imwrite(Imerged,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig3b_AC_topo_across_age.png');
+imwrite(Imerged,[filepath '\PLOTS\Fig3b_AC_topo_across_age.png']);
 
 %% Figure 3b -- scatter and lifit acorss age
 % plotting it so the interaction effect of age and cortical hierarchy are
@@ -180,7 +182,7 @@ set(gca,'box','off')
 set(gca,'FontSize',14)
 hold off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\Fig3b_scatter_linfit_AC40_age.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\Fig3b_scatter_linfit_AC40_age.png'],'Resolution',500)
 
 %% SUPPLEMENTARY: boxplots AC40 
 
@@ -212,5 +214,5 @@ xlabel('age group')
 ylabel('autocorrelation')
 hold off
 
-exportgraphics(gcf,'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\PLOTS\SUPPL_bloxplot_AC40_age.png','Resolution',500)
+exportgraphics(gcf,[filepath '\PLOTS\SUPPL_bloxplot_AC40_age.png'],'Resolution',500)
 

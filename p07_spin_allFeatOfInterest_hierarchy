@@ -8,6 +8,7 @@ from netneurotools import datasets as nntdata
 import neuromaps
 import pandas as pd
 import numpy as np
+import os
 
 # fetch annotation of the gradient along the hierarchical axis. Then parcellate this annotation according to the schäfer200 atlas (just like we parcellated our CamCAN data) 
 hierarchy = fetch_annotation(source='sydnor2021') # load hierarchy annotation (sydnor et al., 2021)
@@ -20,9 +21,11 @@ np.savetxt('hierarchy_parc.csv', hierarchy_parc, delimiter=',', fmt='%s') # save
 rotated = nulls.alexander_bloch(hierarchy_parc, atlas='fsLR', density='32k', parcellation=dlabel_to_gifti(schaefer),
                                 n_perm=50000, seed=1234)
 
+filepath = os.getcwd()
+
 # read our matrix
 featuredata = []
-featuredata = pd.read_csv('Z:/TBraiC/JF/HCTSA feature gradients/CamCan/Code2Publish/DATA/feat4spin_hierarchy.csv', header = None)
+featuredata = pd.read_csv(filepath + '\\DATA\\feat4spin_hierarchy.csv', header = None)
 featuredata = featuredata.to_numpy()
 #featuredata = np.mean(featuredata,0)
 featuredata = featuredata.T

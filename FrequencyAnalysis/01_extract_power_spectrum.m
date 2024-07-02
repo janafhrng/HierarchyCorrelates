@@ -2,12 +2,14 @@ clearvars;
 close all
 clc
 
+filepath = pwd;
+
+%% DOES NOT WORK IN THE PUBLISHED TOOLBOX --> as it is neccessary to have a granted access to the data in the CamCAN repository
 % load u.a. fieldtrip toolbox
-addpath(genpath('C:\Users\fehring\sciebo\Toolboxes\'))
 
 % load time series data files
 % data: for each participant: parcels(214) x trials(30) x samples(3000)
-PATHIN = 'Z:\TBraiC\JF\HCTSA feature gradients\CamCan\raw_data\';
+PATHIN = [filepath '\raw_data\'];
 % only look for files which are from condition 1 (closed eyes condition)
 files = dir([PATHIN,'*.mat']);
 files = {files.name};
@@ -46,4 +48,4 @@ for i = 1:size(files,2)
 end
 
 % save data
-save('Z:\TBraiC\JF\HCTSA feature gradients\CamCan\Code2Publish\DATA\01_specData_all',"specData_all");
+save([filepath '\DATA\01_specData_all'],"specData_all");
