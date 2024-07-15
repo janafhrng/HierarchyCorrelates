@@ -41,11 +41,10 @@ hierarchy_parc_sort = hierarchy_parc(idx);
 mat_avg_z_sort = mat_avg_z(idx);
 
 % find color vector indices
-idx_color = sort(randsample(256,200),'descend');
 
 f = lm_intercept+lm_slope*hierarchy_parc;
 figure('Color','w','Position',[1,1,400,600])
-scatter(hierarchy_parc_sort,mat_avg_z_sort,90,vik(idx_color,:),'filled','o','MarkerFaceAlpha',.7)
+scatter(hierarchy_parc_sort,mat_avg_z_sort,90,vik(40,:),'filled','o','MarkerFaceAlpha',.5)
 hold on
 plot(hierarchy_parc,f,'LineWidth',3,'Color',[0.5 0.5 0.5])
 fill(x,y,[0.5 0.5 0.5],'FaceAlpha',.4,'EdgeColor','none')
@@ -53,7 +52,7 @@ xlabel('cortical hierarchy','FontSize',16)
 ylabel('stationarity of the mean','FontSize',16)
 set(gca,'box','off') 
 set(gca,'FontSize',20)
-ylim([-2 3.2])
+ylim([-1.5 2.5])
 exportgraphics(gcf,[filepath '\PLOTS\Fig2d_scatter_linfit_statAvl100.png'],'Resolution',500)
 
 %% stats

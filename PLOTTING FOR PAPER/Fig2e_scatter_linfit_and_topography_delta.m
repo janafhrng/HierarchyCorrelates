@@ -34,13 +34,10 @@ y = [CIY CIY(end:-1:1)+dist*2];
 hierarchy_parc_sort = hierarchy_parc(idx);
 delta_mean_sort = delta_mean(idx);
 
-% find color vector indices
-idx_color = sort(randsample(256,200),'descend');
-
 f = lm_intercept+lm_slope*hierarchy_parc;
 
 figure('Color','w','Position',[1,1,400,600])
-scatter(hierarchy_parc_sort,delta_mean_sort,90,vik(idx_color,:),'filled','o','MarkerFaceAlpha',.7)
+scatter(hierarchy_parc_sort,delta_mean_sort,90,vik(40,:),'filled','o','MarkerFaceAlpha',.5)
 hold on
 plot(hierarchy_parc,f,'LineWidth',3,'Color',[0.5 0.5 0.5])
 fill(x,y,[0.5 0.5 0.5],'FaceAlpha',.4,'EdgeColor','none')

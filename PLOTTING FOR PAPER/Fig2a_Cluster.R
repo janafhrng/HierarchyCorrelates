@@ -51,9 +51,9 @@ Cairo::Cairo(
   45, #length
   25, #width
   file = paste(filepath, "/PLOTS/Fig2a_cluster_main_hierarchy_hctsa", ".png", sep = ""),
-  type = "png", #tiff
+  type = "tiff", #tiff
   bg = "transparent", #white or transparent depending on your requirement 
-  dpi = 500,
+  dpi = 1000,
   units = "cm" #you can change to pixels etc 
 )
 
@@ -62,7 +62,7 @@ x <- pheatmap(mat_z_corr,show_colnames=FALSE,
               clustering_distance_cols="euclidean", clustering_distance_rows="euclidean",
               cutree_rows = 4,cutree_cols = 4,
               annotation_col = annotation_col, annotation_row = annotation_col, annotation_names_row = FALSE,
-              legend = TRUE, legend_labels = "absulute correlation",
+              legend = TRUE, legend_labels = "absulute correlation", fontsize_row = 12,
               cellwidth = 12, cellheight = 12,border_color = NA, color = col_dist[1:80], annotation_colors = col_label)+
   theme(text = element_text(family = "A")) 
 
